@@ -19,7 +19,7 @@ exports.generateVideo = (req, res, next) => {
         videoCrf: 18,
         videoCodec: 'libx264',
         videoPreset: 'ultrafast',
-        videoBitrate: 1000,
+        videoBitrate: 1400000,
         aspectRatio: `${width}:${height}`,
       }
       const uploadedFile = req.file

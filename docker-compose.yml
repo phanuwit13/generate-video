@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       context: ./
     ports:
-     - "${PORT}:${PORT}"
+     - "8080:8080"
     networks:
       - puppeteer-network
 networks:
