@@ -21,10 +21,11 @@ exports.generateVideo = (req, res, next) => {
         videoPreset: 'ultrafast',
         videoBitrate: 1400000,
         aspectRatio: `${width}:${height}`,
+        recordDurationLimit: 10,
       }
       const uploadedFile = req.file
       if (!uploadedFile) {
-        return res.status(400).json({ error: 'No file uploaded' })
+        return res.status(400).json({ message: 'No file uploaded' })
       }
       await fs.mkdir(path.join(__dirname, '..', 'video'), { recursive: true })
       const tempLocation = await fs.mkdtemp(
@@ -49,8 +50,8 @@ exports.generateVideo = (req, res, next) => {
       const htmlPath = path.join(extractPath, 'index.html')
       const cssPath = path.join(extractPath, 'style.css')
       await page.goto(`file://${htmlPath}`)
-      await page.addStyleTag({ path: cssPath })
       await page.setViewport({ width, height })
+      await page.addStyleTag({ path: cssPath })
 
       const recorder = new PuppeteerScreenRecorder(page, Config)
       await recorder.start(path.join(tempLocation, 'output.mp4'))
@@ -68,7 +69,7 @@ exports.generateVideo = (req, res, next) => {
       })
     } catch (error) {
       console.error(error)
-      return res.status(500).json({ error: 'Server error' })
+      return res.status(500).json({ message: 'Server error' })
     }
   }
 }
